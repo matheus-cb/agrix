@@ -88,4 +88,15 @@ public class CropService {
         ))
         .collect(Collectors.toList());
   }
+
+  /**
+   * Gets crop by id.
+   *
+   * @param id the id
+   * @return the crop by id
+   */
+  public Optional<CropDto> getCropById(Long id) {
+    return cropRepository.findById(id)
+        .map(crop -> new CropDto(crop.getId(), crop.getName(), crop.getPlantedArea(), crop.getFarm().getId()));
+  }
 }

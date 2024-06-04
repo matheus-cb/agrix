@@ -75,4 +75,17 @@ public class CropController {
     List<CropDto> crops = cropService.getAllCrops();
     return ResponseEntity.ok(crops);
   }
+
+  /**
+   * Gets crop by id.
+   *
+   * @param id the id
+   * @return the crop by id
+   */
+  @GetMapping("/crops/{id}")
+  public ResponseEntity<Object> getCropById(@PathVariable Long id) {
+    Optional<CropDto> cropOptional = cropService.getCropById(id);
+    return cropOptional.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(
+        () -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Plantação não encontrada!"));
+  }
 }
