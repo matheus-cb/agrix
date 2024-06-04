@@ -4,6 +4,7 @@ import com.betrybe.agrix.dto.FarmDto;
 import com.betrybe.agrix.entity.Farm;
 import com.betrybe.agrix.repository.FarmRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,16 @@ public class FarmService {
     return farmRepository.findAll().stream()
         .map(farm -> new FarmDto(farm.getId(), farm.getName(), farm.getSize()))
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Get farm by id.
+   *
+   * @param id the id
+   * @return the farm dto
+   */
+  public Optional<FarmDto> getFarmById(Long id) {
+    return farmRepository.findById(id)
+        .map(farm -> new FarmDto(farm.getId(), farm.getName(), farm.getSize()));
   }
 }
