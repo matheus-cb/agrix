@@ -6,7 +6,9 @@ import com.betrybe.agrix.entity.Crop;
 import com.betrybe.agrix.entity.Farm;
 import com.betrybe.agrix.repository.CropRepository;
 import com.betrybe.agrix.repository.FarmRepository;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,25 @@ public class CropService {
       return Optional.of(
           new CropDto(savedCrop.getId(), savedCrop.getName(), savedCrop.getPlantedArea(), farmId)
       );
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  /**
+   * Gets crops by farm id.
+   *
+   * @param farmId the farm id
+   * @return the crops by farm id
+   */
+  public Optional<List<CropDto>> getCropsByFarmId(Long farmId) {
+    Optional<Farm> farmOptional = farmRepository.findById(farmId);
+    if (farmOptional.isPresent()) {
+      List<CropDto> crops = cropRepository.findAllByFarmId(farmId)
+          .stream()
+          .map(crop -> new CropDto(crop.getId(), crop.getName(), crop.getPlantedArea(), farmId))
+          .collect(Collectors.toList());
+      return Optional.of(crops);
     } else {
       return Optional.empty();
     }
