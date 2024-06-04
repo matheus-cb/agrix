@@ -74,4 +74,18 @@ public class CropService {
       return Optional.empty();
     }
   }
+
+  /**
+   * Gets all crops.
+   *
+   * @return the all crops
+   */
+  public List<CropDto> getAllCrops() {
+    return cropRepository.findAll()
+        .stream()
+        .map(crop -> new CropDto(
+            crop.getId(), crop.getName(), crop.getPlantedArea(), crop.getFarm().getId()
+        ))
+        .collect(Collectors.toList());
+  }
 }

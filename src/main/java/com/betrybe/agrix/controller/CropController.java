@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Crop controller.
  */
 @RestController
-@RequestMapping("/farms/{farmId}/crops")
 public class CropController {
 
   private final CropService cropService;
@@ -41,7 +40,7 @@ public class CropController {
    * @param cropCreationDto the crop creation dto
    * @return the response entity
    */
-  @PostMapping
+  @PostMapping("/farms/{farmId}/crops")
   public ResponseEntity<Object> createCrop(
       @PathVariable Long farmId, @RequestBody CropCreationDto cropCreationDto
   ) {
@@ -59,10 +58,21 @@ public class CropController {
    * @param farmId the farm id
    * @return the crops by farm id
    */
-  @GetMapping
+  @GetMapping("/farms/{farmId}/crops")
   public ResponseEntity<Object> getCropsByFarmId(@PathVariable Long farmId) {
     Optional<List<CropDto>> cropsOptional = cropService.getCropsByFarmId(farmId);
     return cropsOptional.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(
         () -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fazenda não encontrada!"));
+  }
+
+  /**
+   * Gets all crops.
+   *
+   * @return the all crops
+   */
+  @GetMapping("/crops")
+  public ResponseEntity<List<CropDto>> getAllCrops() {
+    List<CropDto> crops = cropService.getAllCrops();
+    return ResponseEntity.ok(crops);
   }
 }
