@@ -97,6 +97,8 @@ public class CropService {
    */
   public Optional<CropDto> getCropById(Long id) {
     return cropRepository.findById(id)
-        .map(crop -> new CropDto(crop.getId(), crop.getName(), crop.getPlantedArea(), crop.getFarm().getId()));
+        .map(crop -> new CropDto(
+            crop.getId(), crop.getName(), crop.getPlantedArea(), crop.getFarm().getId()
+        ));
   }
 }
