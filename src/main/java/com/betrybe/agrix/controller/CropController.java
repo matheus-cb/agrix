@@ -3,6 +3,8 @@ package com.betrybe.agrix.controller;
 import com.betrybe.agrix.dto.CropCreationDto;
 import com.betrybe.agrix.dto.CropDto;
 import com.betrybe.agrix.service.CropService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Crop controller.
  */
 @RestController
+@Tag(name = "Crop Controller", description = "APIs relacionadas às plantações")
 public class CropController {
 
   private final CropService cropService;
@@ -41,6 +44,7 @@ public class CropController {
    * @return the response entity
    */
   @PostMapping("/farms/{farmId}/crops")
+  @Operation(summary = "Cria uma nova plantação para uma fazenda específica")
   public ResponseEntity<Object> createCrop(
       @PathVariable Long farmId, @RequestBody CropCreationDto cropCreationDto
   ) {
@@ -59,6 +63,7 @@ public class CropController {
    * @return the crops by farm id
    */
   @GetMapping("/farms/{farmId}/crops")
+  @Operation(summary = "Retorna todas as plantações de uma fazenda específica")
   public ResponseEntity<Object> getCropsByFarmId(@PathVariable Long farmId) {
     Optional<List<CropDto>> cropsOptional = cropService.getCropsByFarmId(farmId);
     return cropsOptional.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(
@@ -71,6 +76,7 @@ public class CropController {
    * @return the all crops
    */
   @GetMapping("/crops")
+  @Operation(summary = "Retorna todas as plantações")
   public ResponseEntity<List<CropDto>> getAllCrops() {
     List<CropDto> crops = cropService.getAllCrops();
     return ResponseEntity.ok(crops);
@@ -83,6 +89,7 @@ public class CropController {
    * @return the crop by id
    */
   @GetMapping("/crops/{id}")
+  @Operation(summary = "Retorna uma plantação pelo ID")
   public ResponseEntity<Object> getCropById(@PathVariable Long id) {
     Optional<CropDto> cropOptional = cropService.getCropById(id);
     return cropOptional.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(

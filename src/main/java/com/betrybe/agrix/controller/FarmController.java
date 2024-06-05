@@ -2,6 +2,8 @@ package com.betrybe.agrix.controller;
 
 import com.betrybe.agrix.dto.FarmDto;
 import com.betrybe.agrix.service.FarmService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/farms")
+@Tag(name = "Farm Controller", description = "APIs relacionadas às fazendas")
 public class FarmController {
 
   private FarmService farmService;
@@ -40,6 +43,7 @@ public class FarmController {
    * @return the response entity
    */
   @PostMapping
+  @Operation(summary = "Cria uma nova fazenda")
   public ResponseEntity<FarmDto> createFarm(@RequestBody FarmDto farmDto) {
     FarmDto savedFarm = farmService.createFarm(farmDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedFarm);
@@ -51,6 +55,7 @@ public class FarmController {
    * @return the response entity
    */
   @GetMapping
+  @Operation(summary = "Retorna todas as fazendas")
   public ResponseEntity<List<FarmDto>> getAllFarms() {
     List<FarmDto> farms = farmService.getAllFarms();
     return ResponseEntity.ok(farms);
@@ -63,6 +68,7 @@ public class FarmController {
    * @return the response entity
    */
   @GetMapping("/{id}")
+  @Operation(summary = "Retorna uma fazenda pelo ID")
   public ResponseEntity<Object> getFarmById(@PathVariable Long id) {
     Optional<FarmDto> farm = farmService.getFarmById(id);
     return farm.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(
